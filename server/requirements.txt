@@ -1,0 +1,11 @@
+flask
+Flask-Cors
+pandas
+openpyxl
+langchain
+langchain-community
+langchain-google-genai
+chromadb
+gunicorn
+langchain-chroma
+python-dotenv
