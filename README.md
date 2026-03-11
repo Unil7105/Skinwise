@@ -4,7 +4,7 @@
 
 ## Demo
 
-<video src="./My%20Movie.mp4" controls="controls" width="100%">
+<video src="demo.mp4" controls muted playsinline>
   Your browser does not support the video tag.
 </video>
 
