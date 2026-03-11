@@ -2,6 +2,12 @@
 
 **Skinwise** is a full-stack web application that provides personalized skincare product recommendations based on user preferences and skin concerns. The platform is built with a React frontend (`client`) and a Flask-based backend (`server`) powered by LangChain and Google Generative AI.
 
+## Demo
+
+<video src="./My%20Movie.mp4" controls="controls" width="100%">
+  Your browser does not support the video tag.
+</video>
+
 ## Project Structure
 
 This repository is split into two main sections:
@@ -76,7 +82,7 @@ The client is built with React + Vite.
 
 ### Backend
 - **Framework**: Python 3.8+, Flask, Flask-CORS
-- **AI & NLP**: LangChain, Google Generative AI
+- **AI & NLP**: LangChain, Google Generative AI, HuggingFace Embeddings
 - **Database**: ChromaDB (Vector Database)
 - **Data Loading**: Pandas (for parsing product data from Excel)
 

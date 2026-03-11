@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import pandas as pd
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
@@ -30,7 +31,7 @@ df = pd.read_excel(file_path)
 categories = df['Category'].unique().tolist()
 
 # Initialize embeddings for Chroma
-embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001", google_api_key=os.environ["GOOGLE_API_KEY"])
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # Initialize Chroma database with product data
 def initialize_database():

@@ -9,3 +9,5 @@ chromadb
 gunicorn
 langchain-chroma
 python-dotenv
+langchain-huggingface
+sentence-transformers
