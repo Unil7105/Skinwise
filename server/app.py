@@ -41,7 +41,12 @@ def initialize_database():
     text_documents = [Document(page_content=json.dumps(doc), metadata={"category": doc["Category"]}) for doc in documents]
     return Chroma.from_documents(text_documents, embeddings, persist_directory=persistent_directory)
 
-db = initialize_database()
+if os.path.exists(persistent_directory) and os.listdir(persistent_directory):
+    print("Loading existing Chroma database...")
+    db = Chroma(persist_directory=persistent_directory, embedding_function=embeddings)
+else:
+    print("Creating new Chroma database...")
+    db = initialize_database()
 
 # Parse product content from JSON
 def parse_document_content(content):

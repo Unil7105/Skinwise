@@ -1,5 +1,5 @@
-# Ignore Chroma database
-db/chroma_db/
+# Do NOT ignore the pre-built Chroma DB anymore, so Render starts up instantly without re-embedding
+# db/chroma_db/
 
 # Ignore environment files
 .env
