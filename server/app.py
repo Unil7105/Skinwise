@@ -107,5 +107,10 @@ def search():
         print(f"Search error: {str(e)}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
+# Ping endpoint to keep the server awake on free tiers
+@app.route('/ping', methods=['GET'])
+def ping():
+    return jsonify({"status": "alive"}), 200
+
 if __name__ == "__main__":
     app.run(debug=True)

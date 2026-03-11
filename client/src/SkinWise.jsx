@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Sparkles, Search, Loader2 } from 'lucide-react'
 
 
@@ -16,6 +16,16 @@ function SkinWise() {
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState("search") // "search" or "results"
 
+  // Keep-alive ping to prevent backend from sleeping (Render free tier)
+  useEffect(() => {
+    const keepAlive = setInterval(() => {
+      fetch('https://skinwise-ivn9.onrender.com/ping')
+        .catch(err => console.log('Keep-alive ping failed:', err));
+    }, 600000); // Ping every 10 minutes
+
+    return () => clearInterval(keepAlive);
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prevData => ({
@@ -29,7 +39,7 @@ function SkinWise() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch('http://127.0.0.1:5000/search', {
+      const response = await fetch('https://skinwise-ivn9.onrender.com/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,8 +92,8 @@ function SkinWise() {
               <button
                 onClick={() => setActiveTab("search")}
                 className={`flex-1 py-4 text-center font-medium transition-colors duration-200 ${activeTab === "search"
-                    ? "text-rose-600 dark:text-rose-400 border-b-2 border-rose-500"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  ? "text-rose-600 dark:text-rose-400 border-b-2 border-rose-500"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                   }`}
               >
                 Search
@@ -92,10 +102,10 @@ function SkinWise() {
                 onClick={() => setActiveTab("results")}
                 disabled={results.length === 0}
                 className={`flex-1 py-4 text-center font-medium transition-colors duration-200 ${activeTab === "results" && results.length > 0
-                    ? "text-teal-600 dark:text-teal-400 border-b-2 border-teal-500"
-                    : results.length === 0
-                      ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  ? "text-teal-600 dark:text-teal-400 border-b-2 border-teal-500"
+                  : results.length === 0
+                    ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                   }`}
               >
                 Results {results.length > 0 && `(${results.length})`}
