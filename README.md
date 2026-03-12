@@ -4,7 +4,7 @@
 
 ## Demo
 
-<video src="demo.mp4" controls muted playsinline>
+<video src="https://github.com/Unil7105/Skinwise/raw/main/demo.mp4" controls muted playsinline>
   Your browser does not support the video tag.
 </video>
 
