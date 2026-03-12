@@ -30,8 +30,9 @@ persistent_directory = os.path.join(current_dir, "db", "chroma_db")
 df = pd.read_excel(file_path)
 categories = df['Category'].unique().tolist()
 
-# Initialize embeddings for Chroma
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# Lazy initialization variables
+embeddings = None
+db = None
 
 # Initialize Chroma database with product data
 def initialize_database():
@@ -41,12 +42,21 @@ def initialize_database():
     text_documents = [Document(page_content=json.dumps(doc), metadata={"category": doc["Category"]}) for doc in documents]
     return Chroma.from_documents(text_documents, embeddings, persist_directory=persistent_directory)
 
-if os.path.exists(persistent_directory) and os.listdir(persistent_directory):
-    print("Loading existing Chroma database...")
-    db = Chroma(persist_directory=persistent_directory, embedding_function=embeddings)
-else:
-    print("Creating new Chroma database...")
-    db = initialize_database()
+def get_db():
+    global embeddings, db
+    if db is None:
+        print("Initializing HuggingFaceEmbeddings...")
+        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        
+        if os.path.exists(persistent_directory) and os.listdir(persistent_directory):
+            print("Loading existing Chroma database...")
+            db = Chroma(persist_directory=persistent_directory, embedding_function=embeddings)
+        else:
+            print("Creating new Chroma database...")
+            db = initialize_database()
+            
+    return db
+
 
 # Parse product content from JSON
 def parse_document_content(content):
@@ -92,9 +102,10 @@ def search():
         )
         
         final_results = []
+        db_instance = get_db()
         for category in categories:
             # Retrieve the top product for the category based on similarity
-            category_results = db.similarity_search_with_relevance_scores(user_query, k=1, filter={"category": category})
+            category_results = db_instance.similarity_search_with_relevance_scores(user_query, k=1, filter={"category": category})
             if category_results:  # Check if any results were returned
                 best_doc, _ = category_results[0]
                 parsed_content = parse_document_content(best_doc.page_content)
