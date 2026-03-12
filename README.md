@@ -4,9 +4,7 @@
 
 ## Demo
 
-<video src="https://github.com/Unil7105/Skinwise/raw/main/demo.mp4" controls muted playsinline>
-  Your browser does not support the video tag.
-</video>
+https://github.com/Unil7105/Skinwise/assets/demo.mp4
 
 ## Project Structure
 
